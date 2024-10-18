@@ -1,0 +1,69 @@
+---
+  - hosts: all
+    become: yes
+    become_method: sudo
+    
+    tasks:
+      - name: "Added fruitshop user"
+        user:
+          name: fruitshop
+
+      - name: "Copy market directory to /opt"
+        synchronize:
+          src: files/market/
+          dest: /opt/fruitshop
+
+      - name: "Change ownership and set permissions for /opt/fruitshop"
+        file:
+          path: /opt/fruitshop
+          owner: fruitshop
+          group: fruitshop
+          mode: '0755'
+          recurse: yes
+
+      - name: "Copy nsjail.cfg to /opt/fruitshop"
+        copy:
+          src: files/nsjail.cfg
+          dest: /opt/fruitshop.cfg
+          owner: root
+          group: root
+          mode: '0644'
+
+      # Note: the nsjail needs to be compiled for specific destribution. This file is compiled for Debain 12
+      - name: "Copy nsjail file to /bin/sbin"
+        copy:
+          src: files/nsjail
+          dest: /usr/sbin/nsjail
+          owner: root
+          group: root
+          mode: '0755'
+          
+      - name: "Install required packages"
+        apt:
+          name:
+            - libprotobuf-dev
+            - libnl-route-3-dev
+          state: present
+          update_cache: yes
+
+
+      - name: "Copy fruitshop service file to /etc/systemd/system"
+        copy:
+          src: files/fruitshop.service
+          dest: /etc/systemd/system/fruitshop.service
+          owner: root
+          group: root
+          mode: '0644'
+
+      - name: "Reload systemd daemon"
+        command: systemctl daemon-reload
+
+      - name: "Enable the fruitshop service"
+        systemd:
+          name: fruitshop
+          enabled: yes
+
+      - name: "Start the fruitshop service"
+        systemd:
+          name: fruitshop
+          state: started

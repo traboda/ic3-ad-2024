@@ -1,0 +1,15 @@
+[Unit]
+Description=Fruit Shop nsjail Service
+After=network.target
+
+[Service]
+Type=simple
+User=fruitshop
+Group=fruitshop
+ExecStart=/usr/sbin/nsjail -C  /opt/fruitshop.cfg
+WorkingDirectory=/opt/fruitshop
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
