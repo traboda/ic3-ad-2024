@@ -157,6 +157,7 @@ auth(uint64_t x) {
 }
 
 #define SHA256_DIGEST_LENGTH 32
+#define TAG_LENGTH 10
 
 #ifdef CANARY
     #define CANARY_VAL CANARY
@@ -586,8 +587,13 @@ void saveBasket() {
 
   FILE *fd;
   char * tag = getBasketTag(basket.tag, BUF_SIZE);
+
+  // Use only the first 5 bytes of basket.tag for the filename
+  size_t filename_size = strlen(tag) + TAG_LENGTH + 2; // 1 for '-' and 1 for '\0'
+  char * filename = Malloc(filename_size);
+  snprintf(filename, filename_size, "%s-%.*s", tag, TAG_LENGTH, basket.tag);
   
-  fd = Fopen(tag,"w+");
+  fd = Fopen(filename, "w+");
   Fwrite(&basket.f_count, sizeof(size_t), 1, fd);
   Fwrite(basket.tag, BUF_SIZE, 1, fd);
 
@@ -599,7 +605,10 @@ void saveBasket() {
   }
 
   Fclose(fd);
-  printf("Basket tag : %s\n",tag);
+  printf("Basket tag : %s\n",filename);
+
+  free(tag);
+  free(filename);
   return;
 }
 
@@ -607,7 +616,7 @@ void saveBasket() {
 void checkTag(char * tag){
     unsigned int length=0;
     for(size_t i=0; i<strlen(tag);i++){
-        if((tag[i] >= '0' && tag[i] <= '9') || (tag[i] >= 'a' && tag[i] <= 'z')){
+        if((tag[i] >= '0' && tag[i] <= '9') || (tag[i] >= 'a' && tag[i] <= 'z') || tag[i] == '-'){
             length++;
         }
     }
@@ -620,7 +629,7 @@ void checkTag(char * tag){
 
 void restoreBasket() {
 
-  char tag[SHA256_DIGEST_LENGTH*2+1]={0};
+  char tag[SHA256_DIGEST_LENGTH * 2 + TAG_LENGTH + 2]={0};
   printf("Basket tag : ");
   getInp(tag,sizeof(tag));
   checkTag(tag);
@@ -661,7 +670,7 @@ void restoreBasket() {
 
 void removeBasket(){
     initBasket();
-    char tag[SHA256_DIGEST_LENGTH*2+1]={0};
+    char tag[SHA256_DIGEST_LENGTH*2 + TAG_LENGTH + 2]={0};
     printf("Basket tag : ");
     getInp(tag,sizeof(tag));
     checkTag(tag);

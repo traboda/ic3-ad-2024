@@ -12,7 +12,7 @@ import checker_pb2_grpc as checker_grpc
 
 from bi0stools import Connection, context
 
-TOTAL_BIN = 10
+TOTAL_BIN = 100
 
 TIMEOUT = 10
 
@@ -27,8 +27,7 @@ def gen_rand_shop_number():
 
 def gen_rand_str(length):
     return "".join(
-        random.SystemRandom().choice(string.ascii_letters + string.digits)
-        for _ in range(length)
+        random.SystemRandom().choice(string.hexdigits.lower()) for _ in range(length)
     )
 
 
@@ -131,12 +130,12 @@ async def selectFruitShop(io, number):
 
 # This function plants a flag in a random shop
 # The token format is <shop_number>:<basket_hash>
-async def set_flag(ip, port, flag) -> Tuple[checker.ServiceStatus, str]:
+async def set_flag(ip, port, flag_id, flag) -> Tuple[checker.ServiceStatus, str]:
     try:
         io = await Connection.remote(ip, port)
         shop_no = gen_rand_shop_number()
         await selectFruitShop(io, shop_no)
-        basket_name = gen_rand_str(10)
+        basket_name = flag_id
         await createBasket(io, basket_name)
         fruit_no = random.randint(1, 5)
         await addFruit(io, fruit_no, flag)
@@ -252,7 +251,7 @@ async def check_service(ip, port, total_no):
     # This is to check all the binaries
     # TODO: don't check the service if it's already checked
     task = []
-    sem = asyncio.Semaphore(50)
+    sem = asyncio.Semaphore(30)
     for i in range(total_no):
         task.append(
             asyncio.create_task(
@@ -278,15 +277,18 @@ async def get_flag(ip, port, flag, token) -> checker.ServiceStatus:
 
 class Checker(checker_grpc.CheckerServicer):
     def PlantFlag(self, request, context):
-        status, token = asyncio.run(set_flag(request.ip, request.port, request.flag))
+        flag_id = gen_rand_str(10)
+        status, token = asyncio.run(
+            set_flag(request.ip, request.port, flag_id, request.flag)
+        )
         print("Plant Flag {} -> {} : {} ".format(request.ip, request.port, status))
-        return checker.PlantFlagResponse(status=status, token=token)
+        return checker.PlantFlagResponse(status=status, token=token, identifier=flag_id)
 
     def CheckFlag(self, request, context):
         status = asyncio.run(
             get_flag(request.ip, request.port, request.flag, request.token)
         )
-        print("Check Flag {} -> {} : {}", request.ip, request.port, status)
+        print("Check Flag {} -> {} : {}".format(request.ip, request.port, status))
         return status
 
     def CheckService(self, request, context):
