@@ -53,6 +53,7 @@ for i in range(b_count):
             fruitshop.c -D CANARY=%s -D  SIZE=%s %s -o bin%s -lcrypto"
         % (str(canary), str(random_size), str(auth_func), str(i))
     )
+    system("strip bin%s" % str(i))
     system("mv bin%s market/shop-%s" % (str(i), str(i)))
     system("mkdir -p market/storeroom-%s" % (str(i)))
 
