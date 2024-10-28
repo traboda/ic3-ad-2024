@@ -605,7 +605,7 @@ void saveBasket() {
   return;
 }
 
-bool checkTag(char *tag) {
+void checkTag(char *tag) {
   unsigned int length = 0;
   for (size_t i = 0; i < strlen(tag); i++) {
     if ((tag[i] >= '0' && tag[i] <= '9') || (tag[i] >= 'a' && tag[i] <= 'z') ||
@@ -667,7 +667,7 @@ void removeBasket() {
   printf("Basket tag : ");
   getInp(tag, sizeof(tag));
   checkTag(tag);
-  Unlink(tag);
+  // Unlink(tag);
   return;
 }
 

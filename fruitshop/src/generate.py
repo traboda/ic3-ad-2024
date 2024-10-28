@@ -48,10 +48,11 @@ for i in range(b_count):
         func[k - 1] = True
 
     function_order[i] = func
+    seed = 0x1A4 + i
     system(
-        "clang -frandomize-layout-seed=0xe5c4p3 -no-pie -Wno-format-security \
-            fruitshop.c -D CANARY=%s -D  SIZE=%s %s -o bin%s -lcrypto"
-        % (str(canary), str(random_size), str(auth_func), str(i))
+        "clang -frandomize-layout-seed=%s -no-pie -Wno-format-security \
+            fruitshop.c -D CANARY=%s -D  SIZE=%s %s -o bin%s -lcrypto -g"
+        % (str(seed), str(canary), str(random_size), str(auth_func), str(i))
     )
     system("strip bin%s" % str(i))
     system("mv bin%s market/shop-%s" % (str(i), str(i)))
