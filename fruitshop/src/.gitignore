@@ -1,4 +1,4 @@
-auth.so
+# auth.so
 auth.o
-functions_order.json
+# functions_order.json
 market/*
