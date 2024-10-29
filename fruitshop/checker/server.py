@@ -251,7 +251,7 @@ async def check_service(ip, port, total_no):
     # This is to check all the binaries
     # TODO: don't check the service if it's already checked
     task = []
-    sem = asyncio.Semaphore(30)
+    sem = asyncio.Semaphore(50)
     for i in range(total_no):
         task.append(
             asyncio.create_task(

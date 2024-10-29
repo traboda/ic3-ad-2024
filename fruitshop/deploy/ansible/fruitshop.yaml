@@ -8,62 +8,50 @@
         user:
           name: fruitshop
 
-      - name: "Copy market directory to /opt"
-        synchronize:
-          src: files/market/
-          dest: /opt/fruitshop
-
-      - name: "Change ownership and set permissions for /opt/fruitshop"
-        file:
-          path: /opt/fruitshop
+      - name: "Copy market.tar.gz to /opt"
+        copy:
+          src: files/market.tar.gz
+          dest: /opt/market.tar.gz
           owner: fruitshop
           group: fruitshop
-          mode: '0755'
-          recurse: yes
-
-      - name: "Copy nsjail.cfg to /opt/fruitshop"
-        copy:
-          src: files/nsjail.cfg
-          dest: /opt/fruitshop.cfg
-          owner: root
-          group: root
           mode: '0644'
 
-      # Note: the nsjail needs to be compiled for specific destribution. This file is compiled for Debain 12
-      - name: "Copy nsjail file to /bin/sbin"
-        copy:
-          src: files/nsjail
-          dest: /usr/sbin/nsjail
-          owner: root
-          group: root
-          mode: '0755'
-          
+      - name: "Extract market.tar.gz in /opt"
+        unarchive:
+          src: /opt/market.tar.gz
+          dest: /opt/
+          remote_src: yes
+          owner: fruitshop
+          group: fruitshop
+
       - name: "Install required packages"
         apt:
           name:
             - libprotobuf-dev
             - libnl-route-3-dev
+            - socat
+            - xinetd
           state: present
           update_cache: yes
-
-
-      - name: "Copy fruitshop service file to /etc/systemd/system"
+      - name: "Copy fruitshop file to /etc/xinetd.d/"
         copy:
-          src: files/fruitshop.service
-          dest: /etc/systemd/system/fruitshop.service
+          src: files/fruitshop
+          dest: /etc/xinetd.d/fruitshop
           owner: root
           group: root
           mode: '0644'
 
-      - name: "Reload systemd daemon"
-        command: systemctl daemon-reload
+      - name: "Copy run.sh to /opt/market"
+        copy:
+          src: files/run.sh
+          dest: /opt/market/run.sh
+          owner: fruitshop
+          group: fruitshop
+          mode: '0755'
 
-      - name: "Enable the fruitshop service"
+      - name: "Restart xinetd service"
         systemd:
-          name: fruitshop
-          enabled: yes
+          name: xinetd
+          state: restarted
 
-      - name: "Start the fruitshop service"
-        systemd:
-          name: fruitshop
-          state: started
+

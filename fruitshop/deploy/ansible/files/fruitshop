@@ -1,0 +1,15 @@
+service fruitshop
+{
+        disable         = no
+        socket_type     = stream
+        protocol        = tcp
+        user            = fruitshop
+        wait            = no
+        type            = UNLISTED
+        bind            = 0.0.0.0
+        port            = 1337
+        server          = /opt/market/run.sh
+        log_type        = FILE /var/log/xinetd
+        log_on_success  = HOST PID
+        log_on_failure  = HOST
+}

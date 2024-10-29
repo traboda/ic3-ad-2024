@@ -24,11 +24,12 @@ if os.path.exists("market"):
 system("clang fruitshop.c -shared -DSHARED -o auth.so")
 system("mkdir -p market")
 system("clang market.c -o market/market -DCOUNT=%s" % (str(b_count)))
+system("mkdir market/bin")
 
 function_order = {}
 
 for i in range(b_count):
-    func = [False for l in range(8)]
+    func = [False for _ in range(8)]
     canary = random.randint(0x0EADBEEF, 0xFEADBEEF)
     # Random size should always be greater than 10 since this is the minimum tag size in the code
     random_size = random.randint(50, 600)
@@ -55,8 +56,12 @@ for i in range(b_count):
         % (str(seed), str(canary), str(random_size), str(auth_func), str(i))
     )
     system("strip bin%s" % str(i))
-    system("mv bin%s market/shop-%s" % (str(i), str(i)))
+    system("mv bin%s market/bin/shop-%s" % (str(i), str(i)))
     system("mkdir -p market/storeroom-%s" % (str(i)))
+
+system("cp shop market/")
+system("cp -r assets market/")
+system("tar -czf market.tar.gz market")
 
 fd.write(str(json.dumps(function_order)))
 fd.close()

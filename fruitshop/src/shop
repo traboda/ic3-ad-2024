@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+index=$1
+$PWD/assets/nsjail -C $PWD/assets/nsjail.cfg  -Q -B /opt/market/storeroom-$1:/storeroom --cwd /storeroom -- /market/shop-$1

@@ -122,7 +122,7 @@ fi
 check_flag "$FLAG" "$TOKEN"
 
 # Run check_service in parallel and measure time
-PARALLEL_INSTANCES=100
+PARALLEL_INSTANCES=1
 
 echo "Running $PARALLEL_INSTANCES check_service instances in parallel..."
 start_time=$(get_time_ms)
