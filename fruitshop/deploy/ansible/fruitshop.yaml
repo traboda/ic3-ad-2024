@@ -23,6 +23,14 @@
           remote_src: yes
           owner: fruitshop
           group: fruitshop
+      - name: "Copy cleanup.sh to /opt/market"
+        copy:
+          src: files/cleanup.sh
+          dest: /opt/market/cleanup.sh
+          owner: fruitshop
+          group: fruitshop
+          mode: '0755'
+
 
       - name: "Install required packages"
         apt:
