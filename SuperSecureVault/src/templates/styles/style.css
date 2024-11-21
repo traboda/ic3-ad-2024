@@ -1,0 +1,356 @@
+
+/* Global Styles */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --background-color: #f8f9fa;
+  --text-color: #2c3e50;
+  --border-color: #e1e8ed;
+  --hover-color: #2980b9;
+  --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  letter-spacing: -0.5px;
+}
+
+#inventory {
+  font-size: 2.5rem !important;
+  text-transform: uppercase;
+  margin: 2rem 0;
+  color: var(--primary-color);
+  text-shadow: none;
+}
+
+/* Container and Layout */
+.mainbody {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+  padding: 2.5rem;
+  margin: 2rem auto;
+  max-width: 400px;
+  border: 1px solid var(--border-color);
+}
+
+/* Form Elements */
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Buttons */
+button, .button {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover, .button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Links */
+a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--hover-color);
+  text-decoration: underline;
+}
+
+/* Sign In/Up Text */
+#sign-in, #sign-up {
+  font-size: 1rem !important;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin: 0.5rem 0;
+}
+
+#space {
+  color: var(--text-color);
+  font-size: 0.875rem;
+  margin: 1rem 0;
+  opacity: 0.8;
+}
+
+/* Logo */
+img {
+  max-width: 600px;
+  height: auto;
+  margin: 2rem auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mainbody {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  #inventory {
+    font-size: 2rem !important;
+  }
+}
+
+/* Remove the stars animation for a more professional look */
+#stars, #stars2, #stars3 {
+  display: none;
+}
+
+/* Utilities */
+.text-center {
+  text-align: center;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+/* Additional styles for the updated pages */
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Auth Buttons Layout */
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.auth-buttons .button {
+    min-width: 120px;
+}
+
+.divider {
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+/* Form Styling */
+.auth-form {
+    margin: 2rem 0;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.auth-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Header Actions */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.button.secondary {
+    background-color: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.button.secondary:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Inventory Table */
+.inventory-table {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+}
+
+/* Logo */
+.logo {
+    margin-bottom: -2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .auth-buttons {
+        flex-direction: column;
+    }
+    
+    .divider {
+        margin: 0.5rem 0;
+    }
+    
+    .container {
+        padding: 1rem;
+    }
+}
+
+
+/* Vault Selection Page Styles */
+
+.vault-selection {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.vault-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.vault-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.vault-button:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow);
+    border-color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.vault-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.vault-button h2 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    color: var(--primary-color);
+}
+
+.vault-button p {
+    text-align: center;
+    margin: 0;
+    color: var(--text-color);
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Hover effects */
+.vault-button:hover .vault-icon {
+    transform: scale(1.1);
+}
+
+.vault-button:hover h2 {
+    color: var(--secondary-color);
+}
+
+/* Active state */
+.vault-button:active {
+    transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .vault-buttons {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .vault-button {
+        padding: 1.5rem;
+    }
+    
+    .vault-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Optional: Add a subtle animation when the page loads */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.vault-button {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.vault-button:nth-child(2) {
+    animation-delay: 0.2s;
+}
+

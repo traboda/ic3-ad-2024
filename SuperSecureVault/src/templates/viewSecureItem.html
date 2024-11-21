@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Inventory View</title>
+    <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --background-color: #f8f9fa;
+      --text-color: #2c3e50;
+      --border-color: #e1e8ed;
+      --hover-color: #2980b9;
+      --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .mainbody {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: var(--box-shadow);
+      padding: 2.5rem;
+      margin: 2rem auto;
+      max-width: 800px;
+      border: 1px solid var(--border-color);
+    }
+
+    h1 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 2rem;
+      letter-spacing: -0.5px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    button {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      text-align: center;
+    }
+
+    button:hover {
+      background-color: var(--hover-color);
+    }
+
+    .results-table {
+      width: 100%;
+      margin-top: 2rem;
+      border-collapse: collapse;
+      display: none;
+    }
+
+    .results-table.visible {
+      display: table;
+    }
+
+    .results-table th,
+    .results-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .results-table th {
+      background-color: var(--background-color);
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .results-table tr:hover {
+      background-color: var(--background-color);
+    }
+
+    .alert {
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .alert.error {
+      background-color: #fee2e2;
+      border: 1px solid #ef4444;
+      color: #991b1b;
+      display: block;
+    }
+
+    .alert.success {
+      background-color: #dcfce7;
+      border: 1px solid #22c55e;
+      color: #166534;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .mainbody {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mainbody">
+            <h1>Secure Inventory View</h1>
+            
+            <form id="secureForm">
+                <div class="form-group">
+                    <input type="text" id="sid" name="sid" placeholder="Enter SID" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="message" name="message" placeholder="Enter Message" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="token" name="token" placeholder="Enter Token" required>
+                </div>
+                
+                <button type="submit">View Secure Inventory</button>
+            </form>
+            
+            <div id="alertBox" class="alert"></div>
+
+            <table class="results-table" id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Results will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('secureForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new URLSearchParams();
+            formData.append('sid', document.getElementById('sid').value);
+            formData.append('message', document.getElementById('message').value);
+            formData.append('token', document.getElementById('token').value);
+            
+            try {
+                const response = await fetch('/secureinventory/viewItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData.toString()
+                });
+                
+                const data = await response.json();
+                const tbody = document.querySelector('#inventoryTable tbody');
+                const table = document.getElementById('inventoryTable');
+                const alertBox = document.getElementById('alertBox');
+                
+                // Clear previous results
+                tbody.innerHTML = '';
+                alertBox.className = 'alert';
+                
+                if (data.status && data.data) {
+                    // Show success message
+                    alertBox.textContent = data.message;
+                    alertBox.className = 'alert success';
+                    
+                    // Show table
+                    table.className = 'results-table visible';
+                    
+                    // Add the single row of data
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${data.data.name || ''}</td>
+                        <td>${data.data.code || ''}</td>
+                        <td>${data.data.description || ''}</td>
+                    `;
+                    tbody.appendChild(row);
+                } else {
+                    // Show error message
+                    alertBox.textContent = data.message || 'Error fetching inventory data';
+                    alertBox.className = 'alert error';
+                    table.className = 'results-table';
+                }
+            } catch (error) {
+                window.location.href = '/error';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: supersecureinventory
+    restart: unless-stopped
+    ports:
+      - "8000:8000"

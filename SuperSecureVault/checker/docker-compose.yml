@@ -1,0 +1,7 @@
+version: '3'
+services:
+  postoffice-checker:
+    build:
+        context: .
+    ports:
+      - "50051:50051"

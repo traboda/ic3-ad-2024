@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Inventory System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <main>
+            <div class="mainbody">
+                <h1 id="sign-up" class="text-center">Sign Up</h1>
+                
+                <form class="auth-form" method="post" action="/register">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+        
+                    <button type="submit" class="button">Sign Up</button>
+                </form>
+
+                <div class="auth-footer text-center">
+                    <p id="space">Already have an account?</p>
+                    <a href="./login" class="link">Sign In</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
