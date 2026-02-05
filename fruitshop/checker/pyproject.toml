@@ -10,7 +10,7 @@ dependencies = [
     "grpcio>=1.66.2",
     "hexdump>=3.3",
     "mypy-protobuf>=3.6.0",
-    "protobuf==5.27.2",
+    "protobuf==5.29.6",
     "pyright>=1.1.384",
     "ruff>=0.6.9",
     "types-protobuf>=5.28.0.20240924",
